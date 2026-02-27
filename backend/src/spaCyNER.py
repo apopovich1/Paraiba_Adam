@@ -4,9 +4,9 @@ import re #regex for cleaning up entities
 import spacy #import spacy NER
 class spaCyEntities:
     def __init__(self):
-        self.nlp = self._build_nlp() #initialize nlp with custom patterns below
+        self.nlp = self.build_nlp() #initialize nlp with custom patterns below
 
-    def _build_nlp(self): #set the patterns and build nlp pipeline
+    def build_nlp(self): #set the patterns and build nlp pipeline
         nlp = spacy.load("en_core_web_lg") #load the pre-trained large English semantic model
         ruler = nlp.add_pipe("entity_ruler", before="ner", config={"overwrite_ents": True}) #entity ruler allows for custom patterns to be used
         #the patterns are ran before the natural entity processing spaCy does and the patterns will overwrite what spaCy gives
@@ -86,13 +86,13 @@ class spaCyEntities:
         ruler.add_patterns(patterns) #load all patterns to entity ruler
         return nlp #return the nlp object with custom patterns added in
 
-    def _clean_entity(self, text: str): #cleans up the entities and returns a string
+    def clean_entity(self, text: str): #cleans up the entities and returns a string
         text = text.replace("'", "'").replace(""",'"').replace(""", '"') #This gets rid of extra quotes
         text = re.sub(r"\s+", " ", text).strip() #remove extra whitespace that occurs around apostrophes
 
         words = text.split()
         rmFront = {"at", "has", "is", "was", "are", "were", "liked", "be", "the", "a", "an", "thai", "pho", "jamaican", "chinese", 
-                   "burger", "bread",  "mexican", "southern", "sandwiches", "gyro", "indian", "and", "or", ",", "but"}
+                   "burger", "bread",  "mexican", "southern", "sandwiches", "gyro", "indian", "and", "or", ",", "but", "visitd", "ate", "went"}
         #above is a list of words to remove, will have to add more as time goes on
         while words and words[0].lower().strip(":") in rmFront: #get rid of leading words not part of the entity name
             words.pop(0)
@@ -113,7 +113,7 @@ class spaCyEntities:
             return ""
         return text #return the entity back
 
-    def _extract_locations(self, text: str): #extract the locations from text and return a list of all locations processed
+    def extract_locations(self, text: str): #extract the locations from text and return a list of all locations processed
         #below are to clean the text because spacy cannot get them correct for whatever reason
         text = text.replace('\u2019', "'")
         text = text.replace('\u2018', "'")
@@ -127,11 +127,11 @@ class spaCyEntities:
 
         for ent in doc.ents:
             if (ent.label_ == "PLACE"):
-                cleaned = self._clean_entity(ent.text)
+                cleaned = self.clean_entity(ent.text)
 
         for ent in doc.ents: #for all entites
             if (ent.label_ == "PLACE"): #get only places as it was the one picked in the custom patterns
-                cleaned = self._clean_entity(ent.text)
+                cleaned = self.clean_entity(ent.text)
                 if cleaned and cleaned.lower() not in noDups:  
                     locations.append(cleaned) #add to list if cleaned
                     noDups.add(cleaned.lower()) #add to set in case of duplicates, also puts to lower to ensure that different spellings get checked
@@ -141,4 +141,4 @@ class spaCyEntities:
 
 def spaCy_full(text: str): #runs entire class
     entities = spaCyEntities()
-    return entities._extract_locations(text) #returns list of all entities
+    return entities.extract_locations(text) #returns list of all entities

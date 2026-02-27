@@ -16,7 +16,7 @@ class GooglePlacesValidator:
         self.geocoder = Nominatim(user_agent ="ParaibaModel") #get the imported class
         self.cordsCache = {} #store a cache for locations
 
-    def _get_coordinates(self, location: str): #get the coordinates for a location
+    def get_coordinates(self, location: str): #get the coordinates for a location
         if location in self.cordsCache: #if the location is in the cache
             return self.cordsCache[location] #return the coordinates
         try:
@@ -41,7 +41,7 @@ class GooglePlacesValidator:
         # Build search query with full venue name
         search_query = f"{entity} near {location}"
 
-        coords = self._get_coordinates(location)
+        coords = self.get_coordinates(location)
         
         # API parameters
         findID = {
@@ -141,12 +141,12 @@ class GooglePlacesValidator:
             if checkEntity:
                 validatedEntities.append(checkEntity) #if google finds it add it in
 
-                print(f"✓ {checkEntity['name']} - {checkEntity['rating']}/5")
+                print(f"{checkEntity['name']} - {checkEntity['rating']}/5")
 
             else:
                 print(f"Location: {checkEntity} was not found by Google /n") #if not then print this error message
 
-                print(f"✗ {entity} was not found by Google")
+                print(f"{entity} was not found by Google")
 
         return validatedEntities
 

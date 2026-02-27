@@ -6,6 +6,8 @@ from vader import analyzer
 from rankingModel import paraibaScore
 import os
 
+#reminder that it must run py -3.12 -m pip install ...
+
 # Load environment
 load_dotenv()
 GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY') #Google API key from .env
@@ -157,6 +159,8 @@ if newLocations:  # if the name is new to the pariabas collection
             }) 
         else:
             print(f"No match found for {gLoc['name']}")
+
+#check for reddit comments are the same            
 
 # Update existing venues with new comments
 if updateTheLocs:   
