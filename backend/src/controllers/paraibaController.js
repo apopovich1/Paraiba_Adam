@@ -54,7 +54,7 @@ export async function getParaibaEntries(req, res) {
     const query = category 
       ? { category: { $regex: category, $options: 'i' } } 
       : {}
-    const entries = await Paraiba.find(query).sort({ ranking: -1 }).limit(5)
+    const entries = await Paraiba.find(query).sort({ ranking: -1 }).limit(5).lean()
     return res.status(200).json(entries)
   } catch (error) {
     console.log("Error in getParaibaEntries controller", error)

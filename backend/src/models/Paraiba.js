@@ -53,9 +53,9 @@ const paraibaSchema = new mongoose.Schema(
       required: false,
     },
     comments: {
-      type: [String],
+      type: [mongoose.Schema.Types.Mixed],
       required: false,
-      default: [],
+      default: []
     },
     googleReviews: {
       type: [String],

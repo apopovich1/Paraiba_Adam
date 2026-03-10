@@ -13,10 +13,11 @@ export default function DetailPage({ place, label, onBack }) {
           <h2 className="detail-name">{place.name}</h2>
           <p className="detail-desc">{place.description}</p>
           <div className="detail-meta">
-            <div className="meta-item">
-              <span className="meta-label">Sentiment</span>
-              <span className="meta-value">{place.sentimentRating ? `${Math.round(place.sentimentRating * 100)}% positive` : 'N/A'}</span>
-            </div>
+            <span className="meta-value">{
+              (place.sentimentRating || place.sentimentrating)
+              ? `${Math.round((place.sentimentRating || place.sentimentrating) * 100)}% positive`
+              : "N/A"
+            }</span>
             <div className="meta-item">
               <span className="meta-label">Reddit Mentions</span>
               <span className="meta-value">{place.mentionCount ? `${place.mentionCount} mentions` : 'N/A'}</span>
@@ -33,7 +34,7 @@ export default function DetailPage({ place, label, onBack }) {
         place.comments.map((c, i) => (
           <div key={i} className={`comment-card fu${Math.min(i + 2, 5)}`}>
             <div className="comment-body">
-              <span className="comment-text">"{c}"</span>
+              <span className="comment-text">"{c.text}"</span>
               <span className="comment-source">r/GNV</span>
             </div>
           </div>
