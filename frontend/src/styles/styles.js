@@ -321,7 +321,7 @@ const css = `
     display: flex; justify-content: space-between; padding-top: 16px;
     border-top: 1px solid #f0ede6;
   }
-  .meta-item { display: flex; flex-direction: column; align-items: center; gap: 2px; flex: 1; }
+  .meta-item { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; }
   .meta-label {
     font-size: 9px; font-weight: 700; letter-spacing: 0.14em;
     text-transform: uppercase; color: #9ca3af;

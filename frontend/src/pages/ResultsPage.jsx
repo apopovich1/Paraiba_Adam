@@ -26,11 +26,17 @@ export default function ResultsPage({ places, category, label, onSelect, onBack 
           onClick={() => onSelect(p)}
         >
           <div className="result-top-row">
-            <span className="result-num">#{p.ranking}</span>
+            <span className="result-num">#{i + 1}</span>
             <span className="result-badge">Hidden Gem</span>
           </div>
           <p className="result-name">{p.name}</p>
-          <p className="result-desc">{p.description}</p>
+          <p className="result-desc">
+            {p.description
+              ? p.description
+              : p.comments && p.comments.length > 0
+              ? `"${p.comments[0].text}"`
+              : null}
+          </p>
           <span className="result-cta">View details →</span>
         </div>
       ))}

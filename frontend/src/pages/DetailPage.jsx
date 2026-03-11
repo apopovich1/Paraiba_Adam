@@ -13,18 +13,21 @@ export default function DetailPage({ place, label, onBack }) {
           <h2 className="detail-name">{place.name}</h2>
           <p className="detail-desc">{place.description}</p>
           <div className="detail-meta">
-            <span className="meta-value">{
-              (place.sentimentRating || place.sentimentrating)
-              ? `${Math.round((place.sentimentRating || place.sentimentrating) * 100)}% positive`
-              : "N/A"
-            }</span>
             <div className="meta-item">
               <span className="meta-label">Reddit Mentions</span>
-              <span className="meta-value">{place.mentionCount ? `${place.mentionCount} mentions` : 'N/A'}</span>
+              <span className="meta-value">{place.mentionCount ? `${place.mentionCount} mentions` : "N/A"}</span>
             </div>
             <div className="meta-item">
-              <span className="meta-label">Ranking</span>
-              <span className="meta-value">#{place.ranking}</span>
+              <span className="meta-label">Google Rating</span>
+              <span className="meta-value">{place.rating ? `${place.rating} / 5` : "N/A"}</span>
+            </div>
+            <div className="meta-item">
+              <span className="meta-label">GoogleReviews</span>
+              <span className="meta-value">{place.reviewCount ? `${place.reviewCount} reviews` : "N/A"}</span>
+            </div>
+            <div className="meta-item">
+              <span className="meta-label">Gem Score</span>
+              <span className="meta-value">{place.ranking ? `${Math.round(place.ranking)} / 100` : "N/A"}</span>
             </div>
           </div>
         </div>
@@ -41,6 +44,20 @@ export default function DetailPage({ place, label, onBack }) {
         ))
       ) : (
         <p style={{ color: '#9ca3af', fontSize: '13px' }}>No comments yet</p>
+      )}
+      {place.link && place.link.length > 0 && (
+        <a
+          href={place.link[0]}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            fontSize: '12px', color: '#2ec4b6', fontWeight: 600,
+            textDecoration: 'none', alignSelf: 'flex-start',
+            marginTop: '8px', letterSpacing: '0.04em'
+          }}
+        >
+          ↗ View on Reddit
+        </a>
       )}
     </>
   )
