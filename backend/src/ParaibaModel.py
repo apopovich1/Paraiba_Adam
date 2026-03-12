@@ -298,7 +298,7 @@ if updateTheLocs:
             sentimentScore=sentimentScore['compound'] if sentimentScore else 0 #get current sentiment score
         )
         
-        
+        sentimentScore = analyzer(getAllComments) #get vader score of all associated comments
         paraibaCollection.update_one(
             {'_id': exisitingLocInfo['_id']}, #for the id mentioned
             {
