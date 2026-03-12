@@ -79,7 +79,9 @@ class GooglePlacesValidator:
                               
             detailsParams = {
                 'place_id': placeID,
-                'fields': 'name,formatted_address,rating,user_ratings_total,types,editorial_summary,reviews', #get the name, address, rating, total reviews, category, 
+                'fields': 'name,formatted_address,rating,user_ratings_total,types,editorial_summary,reviews, '
+                'serves_beer,serves_breakfast,serves_brunch,serves_dinner,serves_lunch, ' #add in more descriptors
+                'serves_vegetarian_food,serves_wine,dine_in,takeout,delivery', #get the name, address, rating, total reviews, category, 
                 #description, and top 5 reviews
                 'key': self.api_key
             }
@@ -127,7 +129,17 @@ class GooglePlacesValidator:
                 'review_count': place.get('user_ratings_total', 0), #get the number of reviews
                 'category': place.get('types'), #get the category
                 'description': description, #get the description
-                'googlereviews': topReviews #get the top 5 reviews
+                'googlereviews': topReviews, #get the top 5 reviews
+                'serves_breakfast': place.get('serves_breakfast', False), #if the place serves breakfast
+                'serves_brunch': place.get('serves_brunch', False), #if the place servers brunch
+                'serves_lunch': place.get('serves_lunch', False), #if the place servers lunch
+                'serves_dinner': place.get('serves_dinner', False), #if the place serves dinner
+                'serves_beer': place.get('serves_beer', False), #if the place servers beer
+                'serves_wine': place.get('serves_wine', False), #if the place serves wine
+                'serves_vegetarian': place.get('serves_vegetarian_food', False), #if the place serves vegetarian food
+                'dine_in': place.get('dine_in', False), #if the place is dine in
+                'takeout': place.get('takeout', False), #if the place offers takeout
+                'delivery': place.get('delivery', False), #if the place offers delivery
             }
             
         except Exception as e:
