@@ -13,8 +13,8 @@ googleObscurityWeight = 0.40  # fewer reviews = more hidden
 reviewCeiling = 1000
 
 # Reddit normalization ceilings, which will be modified after seeing real data.
-mentionCeiling  = 50  
-upvoteCeiling   = 200  
+mentionCeiling  = 5  
+upvoteCeiling   = 50  
 
 # Calculates the Reddit Score portion of the ranking model.
 def redditScore(mentionCount: int, upvoteCount: float) -> float:
@@ -82,9 +82,6 @@ def paraibaScore(
 
 
 def scoreDestinations(destinations: list[dict]) -> list[dict]:
-    """
-    Scores a list of destination dicts and returns them sorted highest to lowest.
-    """
     results = []
     for destination in destinations:
         try:
@@ -95,7 +92,6 @@ def scoreDestinations(destinations: list[dict]) -> list[dict]:
                 averageUpvotes=destination["averageUpvotes"],
                 sentimentScore=destination["sentimentScore"],
             )
-
         except (KeyError, ValueError) as e:
             scoreResult = {
                 "Paraíba Score": 0.0,
@@ -104,8 +100,29 @@ def scoreDestinations(destinations: list[dict]) -> list[dict]:
                 "Google Score": None,
                 "error": str(e),
             }
-
         results.append({**destination, "Score Result": scoreResult})
+
+    validScores = [
+        r["Score Result"]["Paraíba Score"]
+        for r in results
+        if "error" not in r["Score Result"]
+    ]
+
+    if len(validScores) > 1:
+        minScore     = min(validScores)
+        maxScore     = max(validScores)
+        scoreRange   = maxScore - minScore
+        floorScore   = 60
+        ceilingScore = 95
+        dampenFactor = 0.75
+
+        for r in results:
+            if "error" not in r["Score Result"]:
+                raw        = r["Score Result"]["Paraíba Score"]
+                normalized = (raw - minScore) / scoreRange
+                dampened   = normalized ** dampenFactor
+                rescaled   = floorScore + dampened * (ceilingScore - floorScore)
+                r["Score Result"]["Paraíba Score"] = round(rescaled, 2)
 
     results.sort(key=lambda x: x["Score Result"]["Paraíba Score"], reverse=True)
     return results

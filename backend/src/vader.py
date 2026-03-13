@@ -25,11 +25,11 @@ class SentimentAnalyzer:
 
         for keyword in self.positiveKeywords:
             if keyword in textLower:
-                compound += 0.15
+                compound += 0.1
 
         for keyword in self.negativeKeywords:
             if keyword in textLower:
-                compound -= 0.2
+                compound -= 0.1
 
         compound = max(-1.0, min(1.0, compound))
 
