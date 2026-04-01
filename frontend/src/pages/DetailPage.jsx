@@ -98,13 +98,6 @@ export default function DetailPage({ place, label, onBack }) {
           <span className="detail-stat-value">{place.reviewCount ?? "—"}</span>
           <span className="detail-stat-label">Google Reviews</span>
         </div>
-        <div className="detail-stat-divider" />
-        <div className="detail-stat detail-stat-address">
-          <span className="detail-stat-value detail-stat-address-val">
-            {place.address || "Gainesville, FL"}
-          </span>
-          <span className="detail-stat-label">Address</span>
-        </div>
       </div>
       <div className="detail-section-rule fu5" aria-hidden="true" />
 

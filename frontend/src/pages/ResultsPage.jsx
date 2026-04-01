@@ -6,21 +6,21 @@ const RESTAURANT_GROUPS = [
     group: 'Cuisine',
     cats: [
       { key: 'american',      label: 'American',      icon: '🍔' },
-      { key: 'bbq',           label: 'BBQ',           icon: '🔥' },
-      { key: 'caribbean',     label: 'Caribbean',     icon: '🌴' },
-      { key: 'chinese',       label: 'Chinese',       icon: '🥢' },
       { key: 'italian',       label: 'Italian',       icon: '🍝' },
-      { key: 'japanese',      label: 'Japanese',      icon: '🍣' },
-      { key: 'korean',        label: 'Korean',        icon: '🥘' },
       { key: 'mexican',       label: 'Mexican',       icon: '🌮' },
+      { key: 'japanese',      label: 'Japanese',      icon: '🍣' },
+      { key: 'chinese',       label: 'Chinese',       icon: '🥢' },
       { key: 'mediterranean', label: 'Mediterranean', icon: '🫒' },
-      { key: 'indian',        label: 'Indian',        icon: '🍛' },
-      { key: 'vietnamese',    label: 'Vietnamese',    icon: '🍜' },
       { key: 'thai',          label: 'Thai',          icon: '🥜' },
+      { key: 'indian',        label: 'Indian',        icon: '🍛' },
+      { key: 'korean',        label: 'Korean',        icon: '🥘' },
+      { key: 'vietnamese',    label: 'Vietnamese',    icon: '🍜' },
+      { key: 'bbq',           label: 'BBQ',           icon: '🔥' },
       { key: 'seafood',       label: 'Seafood',       icon: '🦞' },
-      { key: 'steakhouse',    label: 'Steakhouse',    icon: '🥩' },
       { key: 'burgers',       label: 'Burgers',       icon: '🍔' },
       { key: 'sandwiches',    label: 'Sandwiches',    icon: '🥪' },
+      { key: 'caribbean',     label: 'Caribbean',     icon: '🌴' },
+      { key: 'steakhouse',    label: 'Steakhouse',    icon: '🥩' },
     ],
   },
   {
@@ -29,9 +29,9 @@ const RESTAURANT_GROUPS = [
       { key: 'cafe',     label: 'Cafe',     icon: '☕' },
       { key: 'bakery',   label: 'Bakery',   icon: '🥐' },
       { key: 'dessert',  label: 'Dessert',  icon: '🍨' },
+      { key: 'bar',      label: 'Bar',      icon: '🍸' },
       { key: 'brewery',  label: 'Brewery',  icon: '🍺' },
       { key: 'winery',   label: 'Winery',   icon: '🍷' },
-      { key: 'bar',      label: 'Bar',      icon: '🍸' },
     ],
   },
   {
@@ -39,7 +39,6 @@ const RESTAURANT_GROUPS = [
     cats: [
       { key: 'indoor',         label: 'Indoor',           icon: '🏠' },
       { key: 'outdoor',        label: 'Outdoor',          icon: '🌿' },
-      { key: 'indoor/outdoor', label: 'Indoor & Outdoor', icon: '⛅' },
     ],
   },
   
@@ -180,17 +179,21 @@ export default function ResultsPage({ places, category, label, onSelect, onBack,
         {groups.map(g => (
           <div key={g.group} className="sidebar-group-card">
             <p className="sidebar-group-title">{g.group}</p>
-            <div className="sidebar-filter-list">
+            <div className={`sidebar-filter-list${g.group === 'Dining Options' ? ' checkbox-list' : ''}`}>
               {g.cats.map(c => (
                 <button
                   key={c.key}
-                  className={`sidebar-filter-item${selectedTypes.includes(c.key) ? ' active' : ''}${c.label.length > 14 ? ' span-2' : ''}`}
+                  className={`sidebar-filter-item${selectedTypes.includes(c.key) ? ' active' : ''}${g.group === 'Dining Options' ? ' checkbox-item' : ''}`}
                   onClick={() => handleToggle(c.key)}
                 >
                   <span className="sidebar-filter-pill">
-                    <span className="sidebar-filter-icon">{c.icon}</span>
+                    {g.group === 'Dining Options' && (
+                      <span className={`sidebar-checkbox-box${selectedTypes.includes(c.key) ? ' active' : ''}`}>
+                        {selectedTypes.includes(c.key) ? '✓' : ''}
+                      </span>
+                    )}
                     <span className="sidebar-filter-label">{c.label}</span>
-                    {selectedTypes.includes(c.key) && <span className="sidebar-filter-check">✓</span>}
+                    {g.group !== 'Dining Options' && selectedTypes.includes(c.key) && <span className="sidebar-filter-check">✓</span>}
                   </span>
                 </button>
               ))}
