@@ -69,7 +69,7 @@ export default function DetailPage({ place, label, onBack }) {
             </span>
           </span>
           <span className="detail-score-number">{gemScore ?? "—"}</span>
-          <span className="detail-score-sub">out of 100</span>
+          <span className="detail-score-sub">out of 70</span>
         </div>
       </div>
 
