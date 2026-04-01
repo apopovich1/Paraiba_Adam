@@ -2,10 +2,6 @@ import BackBtn from "../components/BackBtn";
 import PlaceMap from "../components/PlaceMap";
 
 export default function DetailPage({ place, label, onBack }) {
-  console.log("place:", place)
-console.log("comments:", place.comments)
-console.log("isArray:", Array.isArray(place.comments))
-console.log("length:", place.comments?.length)
   return (
     <>
       <BackBtn onClick={onBack} />

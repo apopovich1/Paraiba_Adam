@@ -278,20 +278,20 @@ const css = `
     position: relative; overflow: hidden;
     background: #e4f4f3;
   }
-  .map-placeholder {
+  .map-frame {
     width: 100%; height: 100%;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 10px; background: #f0faf9;
-    border-bottom: 1.5px dashed #b2e4df;
+    border: 0; display: block;
+    filter: saturate(0.95) contrast(1.02);
   }
-  .map-placeholder-icon { font-size: 28px; }
-  .map-placeholder-text {
-    font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
-    text-transform: uppercase; color: #9ca3af;
-  }
-  .map-placeholder-address {
-    font-size: 12px; color: #2ec4b6; font-weight: 500;
+  .map-address-badge {
+    position: absolute; top: 12px; left: 50%;
+    transform: translateX(-50%);
+    max-width: calc(100% - 24px);
+    background: rgba(247, 246, 242, 0.92);
+    color: #1a1a2e; border: 1px solid rgba(236, 233, 225, 0.9);
+    border-radius: 999px; padding: 8px 12px;
+    font-size: 11px; font-weight: 600; line-height: 1.3;
+    backdrop-filter: blur(8px);
   }
   .map-open-btn {
     position: absolute; bottom: 12px; right: 12px;
