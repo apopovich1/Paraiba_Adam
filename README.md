@@ -90,5 +90,12 @@ Deploy `frontend` and `backend` as separate Vercel projects.
 
 Set these Vercel environment variables:
 
+## Backend Testing
+To test the backend:
+```bash
+cd ./backend
+py -3.12 -m pytest -v
+```
+
 - Frontend: `VITE_API_URL=https://<your-backend-domain>`
 - Backend: `MONGO_URI`, `APIFY_TOKEN`, `ALLOWED_ORIGINS=https://<your-frontend-domain>`
