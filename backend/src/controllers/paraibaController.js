@@ -74,6 +74,8 @@ export async function getParaibaEntries(req, res) {
   try {
     const { category, categoryType, limit } = req.query;
 
+    const settingFilters = new Set(["indoor", "outdoor", "indoor/outdoor"]);
+
     // Parse limit (default 5)
     const resultLimit = parseInt(limit) || 5;
 
@@ -116,17 +118,42 @@ export async function getParaibaEntries(req, res) {
       }
     }
 
-    // Apply categoryType filters — each selected filter must appear in the categoryType string
+    // Apply categoryType filters.
+    // Non-setting filters stay OR'd together (e.g. hiking OR swimming),
+    // while setting filters narrow the results further (e.g. AND indoor).
     if (typeFilters.length > 0) {
-      const typeConditions = typeFilters.map(filter => ({
-        categoryType: { $regex: filter, $options: "i" },
-      }));
+      const generalFilters = typeFilters.filter(filter => !settingFilters.has(filter.toLowerCase()));
+      const selectedSettings = typeFilters.filter(filter => settingFilters.has(filter.toLowerCase()));
 
-      // AND logic: place must match ALL selected filters
-      if (query.$and) {
-        query.$and.push(...typeConditions);
-      } else {
-        query.$and = typeConditions;
+      const andClauses = [];
+
+      if (generalFilters.length > 0) {
+        andClauses.push({
+          $or: generalFilters.map(filter => ({
+            categoryType: { $regex: filter, $options: "i" },
+          })),
+        });
+      }
+
+      if (selectedSettings.length > 0) {
+        andClauses.push({
+          $or: selectedSettings.map(filter => ({
+            categoryType: { $regex: filter, $options: "i" },
+          })),
+        });
+      }
+
+      // If only one class of filters is selected, this still works as expected.
+      // Example:
+      // - hiking,swimming        => (hiking OR swimming)
+      // - indoor                 => (indoor)
+      // - hiking,swimming,indoor => (hiking OR swimming) AND (indoor)
+      if (andClauses.length > 0) {
+        if (query.$and) {
+          query.$and.push(...andClauses);
+        } else {
+          query.$and = andClauses;
+        }
       }
     }
 
