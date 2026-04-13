@@ -1,6 +1,6 @@
 export default function GemLogo({ size = 26 }) {
   return (
-    // Inline SVG = sharp logo at any size, no extra image request.
+    // Inline SVG = sharp logo at any size.
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none">
       <polygon points="16,2 26,10 16,13 6,10" fill="#2ec4b6" fillOpacity="0.9"/>
       <polygon points="6,10 16,13 11,28 2,16" fill="#1a9e92" fillOpacity="0.85"/>
